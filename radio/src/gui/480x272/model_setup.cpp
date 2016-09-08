@@ -502,8 +502,7 @@ bool menuModelSetup(event_t event)
       {
         lcdDrawText(MENUS_MARGIN_LEFT, y, STR_POTWARNING);
         if (attr) {
-          if (menuHorizontalPosition+1) s_editMode = 0;
-          if (!READ_ONLY() && menuHorizontalPosition+1) {
+          if (!READ_ONLY() && menuHorizontalPosition+1 && s_editMode) {
             switch (event) {
               case EVT_KEY_LONG(KEY_ENTER):
                 killEvents(event);
@@ -514,11 +513,11 @@ bool menuModelSetup(event_t event)
                 }
                 break;
               case EVT_KEY_BREAK(KEY_ENTER):
+                s_editMode = 0;
                 g_model.potsWarnEnabled ^= (1 << (menuHorizontalPosition));
                 storageDirty(EE_MODEL);
                 break;
             }
-
           }
         }
 
@@ -545,8 +544,7 @@ bool menuModelSetup(event_t event)
       {
         lcdDrawText(MENUS_MARGIN_LEFT, y, STR_SLIDERWARNING);
         if (attr) {
-          if (menuHorizontalPosition+1) s_editMode = 0;
-          if (!READ_ONLY() && menuHorizontalPosition+1) {
+          if (!READ_ONLY() && menuHorizontalPosition+1 && s_editMode) {
             switch (event) {
               case EVT_KEY_LONG(KEY_ENTER):
                 killEvents(event);
@@ -557,6 +555,7 @@ bool menuModelSetup(event_t event)
                 }
                 break;
               case EVT_KEY_BREAK(KEY_ENTER):
+                s_editMode = 0;
                 g_model.potsWarnEnabled ^= (1 << (menuHorizontalPosition+NUM_POTS));
                 storageDirty(EE_MODEL);
                 break;
@@ -566,6 +565,7 @@ bool menuModelSetup(event_t event)
 
         if (attr && menuHorizontalPosition < 0) {
           lcdDrawSolidFilledRect(MODEL_SETUP_2ND_COLUMN-INVERT_HORZ_MARGIN, y-INVERT_VERT_MARGIN+1, NUM_SLIDERS*MODEL_SETUP_SLIDPOT_SPACING+INVERT_HORZ_MARGIN, INVERT_LINE_HEIGHT, TEXT_INVERTED_BGCOLOR);
+          
         }
 
         if (g_model.potsWarnMode) {
