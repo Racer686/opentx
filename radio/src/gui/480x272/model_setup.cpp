@@ -220,8 +220,8 @@ int getSwitchWarningsCount()
 
 #define SW_WARN_ITEMS()                   uint8_t(NAVIGATION_LINE_BY_LINE|(getSwitchWarningsCount()-1))
 #define POT_WARN_ROWS                     (uint8_t)0
-#define POT_WARN_ITEMS()                  ((g_model.potsWarnMode) ? uint8_t(NAVIGATION_LINE_BY_LINE|(NUM_POTS)) : (uint8_t)0)
-#define SLIDER_WARN_ITEMS()               ((g_model.potsWarnMode) ? uint8_t(NAVIGATION_LINE_BY_LINE|(NUM_SLIDERS)) : (uint8_t)0)
+#define POT_WARN_ITEMS()                  ((g_model.potsWarnMode) ? uint8_t(NAVIGATION_LINE_BY_LINE|(NUM_POTS-1)) : (uint8_t)0)
+#define SLIDER_WARN_ITEMS()               ((g_model.potsWarnMode) ? uint8_t(NAVIGATION_LINE_BY_LINE|(NUM_SLIDERS-1)) : (uint8_t)0)
 
 bool menuModelSetup(event_t event)
 {
@@ -514,7 +514,7 @@ bool menuModelSetup(event_t event)
                 }
                 break;
               case EVT_KEY_BREAK(KEY_ENTER):
-                g_model.potsWarnEnabled ^= (1 << (menuHorizontalPosition-1));
+                g_model.potsWarnEnabled ^= (1 << (menuHorizontalPosition));
                 storageDirty(EE_MODEL);
                 break;
             }
@@ -528,7 +528,7 @@ bool menuModelSetup(event_t event)
         if (g_model.potsWarnMode) {
           coord_t x = MODEL_SETUP_2ND_COLUMN;
           for (int i=0; i<NUM_POTS; ++i) {
-            LcdFlags flags = (((menuHorizontalPosition==i+1) && attr) ? INVERS : 0);       
+            LcdFlags flags = (((menuHorizontalPosition==i) && attr) ? INVERS : 0);       
             flags |= (g_model.potsWarnEnabled & (1 << i)) ? TEXT_DISABLE_COLOR : TEXT_COLOR;
             if (attr && menuHorizontalPosition < 0) {
               flags |= INVERS;
@@ -550,13 +550,13 @@ bool menuModelSetup(event_t event)
               case EVT_KEY_LONG(KEY_ENTER):
                 killEvents(event);
                 if (g_model.potsWarnMode == POTS_WARN_MANUAL) {
-                  SAVE_POT_POSITION(menuHorizontalPosition-1);
+                  SAVE_POT_POSITION(menuHorizontalPosition+NUM_POTS-1);
                   AUDIO_WARNING1();
                   storageDirty(EE_MODEL);
                 }
                 break;
               case EVT_KEY_BREAK(KEY_ENTER):
-                g_model.potsWarnEnabled ^= (1 << (menuHorizontalPosition+NUM_POTS-1));
+                g_model.potsWarnEnabled ^= (1 << (menuHorizontalPosition+NUM_POTS));
                 storageDirty(EE_MODEL);
                 break;
             }
@@ -570,7 +570,7 @@ bool menuModelSetup(event_t event)
         if (g_model.potsWarnMode) {
           coord_t x = MODEL_SETUP_2ND_COLUMN;
           for (int i=NUM_POTS; i<NUM_POTS+NUM_SLIDERS; ++i) {
-            LcdFlags flags = (((menuHorizontalPosition==i-NUM_POTS+1) && attr) ? INVERS : 0);       
+            LcdFlags flags = (((menuHorizontalPosition==i-NUM_POTS) && attr) ? INVERS : 0);       
             flags |= (g_model.potsWarnEnabled & (1 << i)) ? TEXT_DISABLE_COLOR : TEXT_COLOR;
             if (attr && menuHorizontalPosition < 0) {
               flags |= INVERS;
