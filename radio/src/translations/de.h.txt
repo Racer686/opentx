@@ -770,7 +770,9 @@
 #define TR_SPLASHSCREEN        TR("Startbild Ein", "Startbild Ein für")
 #define TR_THROTTLEWARNING     TR("Gasalarm", INDENT "Gas Alarm")
 #define TR_SWITCHWARNING       TR("Sch. Alarm", INDENT "Schalter-Alarm")
-#define TR_POTWARNING          TR("Pot Warn.", INDENT "Poti-Warnung")
+#define TR_POTWARNINGSTATE     TR(IF_CPUARM(INDENT) "Pot&Slid.", INDENT "Pots & sliders")
+#define TR_POTWARNING          TR(IF_CPUARM(INDENT) "Pot warn.", INDENT "Pot positions")
+#define TR_SLIDERWARNING       TR(IF_CPUARM(INDENT) "Slid. pos.", INDENT "Slider positions")
 #define TR_TIMEZONE            TR("Zeitzone", "GPS-Zeitzone +/-Std")
 #define TR_ADJUST_RTC          INDENT "Uhrzeit per GPS setzen"
 #define TR_GPS                 "----GPS--------------"
