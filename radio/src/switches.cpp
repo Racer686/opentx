@@ -753,7 +753,7 @@ void checkSwitches()
     getMovedSwitch();
 
     bool warn = false;
-#if defined(PCBHORUS)
+#if defined(COLORLCD)
     for (int i=0; i<NUM_SWITCHES; i++) {
       if (SWITCH_WARNING_ALLOWED(i)) {
         unsigned int state = ((states >> (3*i)) & 0x07);
@@ -766,7 +766,7 @@ void checkSwitches()
       evalFlightModeMixes(e_perout_mode_normal, 0);
       bad_pots = 0;
       for (int i=0; i<NUM_POTS+NUM_SLIDERS; i++) {
-        if (!IS_POT_OR_SLIDER_AVAILABLE(i+NUM_STICKS)) {
+        if (!IS_POT_OR_SLIDER_AVAILABLE(POT1+i)) {
           continue;
         }
         if (!(g_model.potsWarnEnabled & (1 << i)) && (abs(g_model.potsWarnPosition[i] - GET_LOWRES_POT_POSITION(i)) > 1)) {
@@ -872,26 +872,20 @@ void checkSwitches()
           x = 60;
         }
         for (int i=0; i<NUM_POTS+NUM_SLIDERS; i++) {
-          if (!IS_POT_OR_SLIDER_AVAILABLE(i)) {
+          if (!IS_POT_OR_SLIDER_AVAILABLE(POT1+i)) {
             continue;
           }
           if (!(g_model.potsWarnEnabled & (1 << i))) {
             if (abs(g_model.potsWarnPosition[i] - GET_LOWRES_POT_POSITION(i)) > 1) {
-#if defined(COLORLCD)
-              char s[8];
-              // TODO add an helper
-              strncpy(s, &STR_VSRCRAW[1+(NUM_STICKS+1+i)*STR_VSRCRAW[0]], STR_VSRCRAW[0]);
-              s[int(STR_VSRCRAW[0])] = '\0';
-#else
               lcdDrawTextAtIndex(x, y, STR_VSRCRAW, NUM_STICKS+1+i, INVERS);
               if (IS_POT(POT1+i))
                 lcdDrawChar(lcdNextPos, y, g_model.potsWarnPosition[i] > GET_LOWRES_POT_POSITION(i) ? 126 : 127, INVERS);
               else
                 lcdDrawChar(lcdNextPos, y, g_model.potsWarnPosition[i] > GET_LOWRES_POT_POSITION(i) ? '\300' : '\301', INVERS);
-#endif
+
 #if defined(COLORLCD)
               if (++numWarnings < 6) {
-                lcdDrawText(x, y, s, ALARM_COLOR);
+                lcdDrawText(x, y, "...", ALARM_COLOR);
               }
               else if (numWarnings == 6) {
                 lcdDrawText(x, y, "...", ALARM_COLOR);
