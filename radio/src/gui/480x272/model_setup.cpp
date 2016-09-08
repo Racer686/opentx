@@ -489,7 +489,7 @@ bool menuModelSetup(event_t event)
 
       case ITEM_MODEL_SLIDPOT_WARNING_STATE:
       {
-        lcdDrawText(MENUS_MARGIN_LEFT, y, "   Pots & Sliders");
+        lcdDrawText(MENUS_MARGIN_LEFT, y,STR_POTWARNINGSTATE);
         lcdDrawTextAtIndex(MODEL_SETUP_2ND_COLUMN, y, PSTR("\004""OFF\0""Man\0""Auto"), g_model.potsWarnMode, attr); 
         if (attr) {
           CHECK_INCDEC_MODELVAR(event, g_model.potsWarnMode, POTS_WARN_OFF, POTS_WARN_AUTO);
@@ -502,13 +502,13 @@ bool menuModelSetup(event_t event)
       {
         lcdDrawText(MENUS_MARGIN_LEFT, y, STR_POTWARNING);
         if (attr) {
-          if (menuHorizontalPosition) s_editMode = 0;
-          if (!READ_ONLY() && menuHorizontalPosition) {
+          if (menuHorizontalPosition+1) s_editMode = 0;
+          if (!READ_ONLY() && menuHorizontalPosition+1) {
             switch (event) {
               case EVT_KEY_LONG(KEY_ENTER):
                 killEvents(event);
                 if (g_model.potsWarnMode == POTS_WARN_MANUAL) {
-                  SAVE_POT_POSITION(menuHorizontalPosition-1);
+                  SAVE_POT_POSITION(menuHorizontalPosition);
                   AUDIO_WARNING1();
                   storageDirty(EE_MODEL);
                 }
@@ -518,6 +518,7 @@ bool menuModelSetup(event_t event)
                 storageDirty(EE_MODEL);
                 break;
             }
+
           }
         }
 
@@ -544,13 +545,13 @@ bool menuModelSetup(event_t event)
       {
         lcdDrawText(MENUS_MARGIN_LEFT, y, STR_SLIDERWARNING);
         if (attr) {
-          if (menuHorizontalPosition) s_editMode = 0;
-          if (!READ_ONLY() && menuHorizontalPosition) {
+          if (menuHorizontalPosition+1) s_editMode = 0;
+          if (!READ_ONLY() && menuHorizontalPosition+1) {
             switch (event) {
               case EVT_KEY_LONG(KEY_ENTER):
                 killEvents(event);
                 if (g_model.potsWarnMode == POTS_WARN_MANUAL) {
-                  SAVE_POT_POSITION(menuHorizontalPosition+NUM_POTS-1);
+                  SAVE_POT_POSITION(menuHorizontalPosition+NUM_POTS);
                   AUDIO_WARNING1();
                   storageDirty(EE_MODEL);
                 }
