@@ -29,7 +29,8 @@
 #elif defined(PCBHORUS)
   #define SWITCH_WARNING_LIST_X        WARNING_LINE_X
   #define SWITCH_WARNING_LIST_Y        WARNING_LINE_Y+3*FH
-  #define SWITCH_WARNING_LIST_INTERVAL 35
+  #define SWITCH_WARNING_LIST_INTERVAL 25
+  #define POTS_WARNING_LIST_INTERVAL   60
 #elif LCD_W >= 212
   #define SWITCH_WARNING_LIST_X        60
   #define SWITCH_WARNING_LIST_Y        4*FH+3
@@ -890,7 +891,7 @@ void checkSwitches()
               else if (numWarnings == 6) {
                 lcdDrawText(x, y, "...", ALARM_COLOR);
               }
-              x += 20;
+              x += POTS_WARNING_LIST_INTERVAL;
 #else
               x = lcdNextPos + 3;
 #endif
