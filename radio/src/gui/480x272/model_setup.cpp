@@ -238,7 +238,7 @@ bool menuModelSetup(event_t event)
   MENU(STR_MENUSETUP, MODEL_ICONS, menuTabModel, MENU_MODEL_SETUP, ITEM_MODEL_SETUP_MAX,
        { 0, 0, TIMERS_ROWS, 0, 1, 0, 0,
          LABEL(Throttle), 0, 0, 0,
-         LABEL(PreflightCheck), 0, 0, SW_WARN_ITEMS(),POT_WARN_ROWS, POT_WARN_ITEMS(), SLIDER_WARN_ITEMS(), NAVIGATION_LINE_BY_LINE|(NUM_STICKS+NUM_POTS+NUM_SLIDERS+NUM_ROTARY_ENCODERS-1), 0,
+         LABEL(PreflightCheck), 0, 0, SW_WARN_ITEMS(),POT_WARN_ROWS, (g_model.potsWarnMode ? POT_WARN_ITEMS() : HIDDEN_ROW),(g_model.potsWarnMode ? SLIDER_WARN_ITEMS() : HIDDEN_ROW), NAVIGATION_LINE_BY_LINE|(NUM_STICKS+NUM_POTS+NUM_SLIDERS+NUM_ROTARY_ENCODERS-1), 0,
          LABEL(InternalModule),
          INTERNAL_MODULE_MODE_ROWS,
          INTERNAL_MODULE_CHANNELS_ROWS,
@@ -490,14 +490,14 @@ bool menuModelSetup(event_t event)
       case ITEM_MODEL_SLIDPOT_WARNING_STATE:
       {
         lcdDrawText(MENUS_MARGIN_LEFT, y,STR_POTWARNINGSTATE);
-        lcdDrawTextAtIndex(MODEL_SETUP_2ND_COLUMN, y, PSTR("\004""OFF\0""Man\0""Auto"), g_model.potsWarnMode, attr); 
+        lcdDrawTextAtIndex(MODEL_SETUP_2ND_COLUMN, y, PSTR("\004""OFF\0""Man\0""Auto"), g_model.potsWarnMode, attr);
         if (attr) {
           CHECK_INCDEC_MODELVAR(event, g_model.potsWarnMode, POTS_WARN_OFF, POTS_WARN_AUTO);
           storageDirty(EE_MODEL);
-        }  
+        }
         break;
       }
-      
+
       case ITEM_MODEL_POTS_WARNING:
       {
         lcdDrawText(MENUS_MARGIN_LEFT, y, STR_POTWARNING);
@@ -510,7 +510,7 @@ bool menuModelSetup(event_t event)
               storageDirty(EE_MODEL);
              }
           }
-          
+
           if (!READ_ONLY() && menuHorizontalPosition+1 && s_editMode && event==EVT_KEY_BREAK(KEY_ENTER)) {
             s_editMode = 0;
             g_model.potsWarnEnabled ^= (1 << (menuHorizontalPosition));
@@ -524,18 +524,18 @@ bool menuModelSetup(event_t event)
         if (g_model.potsWarnMode) {
           coord_t x = MODEL_SETUP_2ND_COLUMN;
           for (int i=0; i<NUM_POTS; ++i) {
-            LcdFlags flags = (((menuHorizontalPosition==i) && attr) ? INVERS : 0);       
+            LcdFlags flags = (((menuHorizontalPosition==i) && attr) ? INVERS : 0);
             flags |= (g_model.potsWarnEnabled & (1 << i)) ? TEXT_DISABLE_COLOR : TEXT_COLOR;
             if (attr && menuHorizontalPosition < 0) {
               flags |= INVERS;
-            }   
+            }
             lcdDrawTextAtIndex(x, y, STR_VSRCRAW, NUM_STICKS+1+i, flags);
             x += MODEL_SETUP_SLIDPOT_SPACING;
           }
         }
         break;
       }
-      
+
       case ITEM_MODEL_SLIDERS_WARNING:
       {
         lcdDrawText(MENUS_MARGIN_LEFT, y, STR_SLIDERWARNING);
@@ -548,7 +548,7 @@ bool menuModelSetup(event_t event)
               storageDirty(EE_MODEL);
              }
           }
-          
+
           if (!READ_ONLY() && menuHorizontalPosition+1 && s_editMode && event==EVT_KEY_BREAK(KEY_ENTER)) {
             s_editMode = 0;
             g_model.potsWarnEnabled ^= (1 << (menuHorizontalPosition+NUM_POTS));
@@ -562,11 +562,11 @@ bool menuModelSetup(event_t event)
         if (g_model.potsWarnMode) {
           coord_t x = MODEL_SETUP_2ND_COLUMN;
           for (int i=NUM_POTS; i<NUM_POTS+NUM_SLIDERS; ++i) {
-            LcdFlags flags = (((menuHorizontalPosition==i-NUM_POTS) && attr) ? INVERS : 0);       
+            LcdFlags flags = (((menuHorizontalPosition==i-NUM_POTS) && attr) ? INVERS : 0);
             flags |= (g_model.potsWarnEnabled & (1 << i)) ? TEXT_DISABLE_COLOR : TEXT_COLOR;
             if (attr && menuHorizontalPosition < 0) {
               flags |= INVERS;
-            }   
+            }
             lcdDrawTextAtIndex(x, y, STR_VSRCRAW, NUM_STICKS+1+i, flags);
             x += MODEL_SETUP_SLIDPOT_SPACING;
           }

@@ -1991,7 +1991,7 @@ void opentxClose(uint8_t shutdown)
     hapticOff();
 #endif
   }
-  
+
 #if defined(SDCARD)
   closeLogs();
 #endif
@@ -2015,7 +2015,7 @@ void opentxClose(uint8_t shutdown)
   }
 #endif
 
-#if defined(PCBTARANIS)
+#if defined(PCBTARANIS) || defined(HORUS) 
   if (g_model.potsWarnMode == POTS_WARN_AUTO) {
     for (int i=0; i<NUM_POTS+NUM_SLIDERS; i++) {
       if (!(g_model.potsWarnEnabled & (1 << i))) {
@@ -2054,21 +2054,21 @@ void opentxClose(uint8_t shutdown)
 void opentxResume()
 {
   TRACE("opentxResume");
-  
+
   menuHandlers[0] = menuMainView;
-  
+
   sdMount();
-  
+
   storageReadAll();
 
 #if defined(PCBHORUS)
   loadTheme();
   loadFontCache();
 #endif
-  
+
   opentxStart(false);
 
-#if defined(CPUARM)  
+#if defined(CPUARM)
   referenceSystemAudioFiles();
 #endif
 
