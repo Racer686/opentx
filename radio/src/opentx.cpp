@@ -2015,7 +2015,7 @@ void opentxClose(uint8_t shutdown)
   }
 #endif
 
-#if defined(PCBTARANIS) || defined(HORUS) 
+#if defined(PCBTARANIS) || defined(PCBHORUS) 
   if (g_model.potsWarnMode == POTS_WARN_AUTO) {
     for (int i=0; i<NUM_POTS+NUM_SLIDERS; i++) {
       if (!(g_model.potsWarnEnabled & (1 << i))) {
